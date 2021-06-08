@@ -102,6 +102,8 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         bool lookback_flag, SDL_Surface* surface, AnimationInfo* cache_info,
     SDL_Rect* clip)
 {
+    SIGNPOST_TAG(LOG_ID);
+    SIGNPOST_BEGIN(LOG_ID, "DrawChar", "Text: %s", text);
     int bytes;
     wchar unicode = file_encoding->DecodeWithLigatures(text, *info, bytes);
 
@@ -169,7 +171,7 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         drawGlyph(surface, info, color, unicode, x, y, false, cache_info,
           clip, dst_rect);
 
-    info->addShadeArea(dst_rect, shade_distance);
+        info->addShadeArea(dst_rect, shade_distance);
         if (surface == accumulation_surface && !flush_flag
             && (!clip || AnimationInfo::doClipping(&dst_rect, clip) == 0)) {
             dirty_rect.add(dst_rect);
@@ -197,6 +199,7 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         }
     }
     TextBuffer_dumpstate(1);
+    SIGNPOST_END(LOG_ID, "DrawChar");
     return bytes;
 }
 

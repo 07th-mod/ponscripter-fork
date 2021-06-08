@@ -1466,10 +1466,12 @@ void PonscripterLabel::flushDirect(SDL_Rect &rect, int refresh_mode, bool update
   refreshSurface(accumulation_surface, &rect, refresh_mode);
 
   if(!updaterect) return;
-
+  SIGNPOST_TAG(LOG_ID);
+  SIGNPOST_BEGIN(LOG_ID, "UpdateTexture");
   if(SDL_UpdateTexture(screen_tex, NULL, accumulation_surface->pixels, accumulation_surface->pitch)) {
     fprintf(stderr,"Error updating texture: %s\n", SDL_GetError());
   }
+  SIGNPOST_END(LOG_ID, "UpdateTexture");
 }
 
 

@@ -26,6 +26,17 @@
 #ifndef __PONSCRIPTER_LABEL_H__
 #define __PONSCRIPTER_LABEL_H__
 
+#ifdef __APPLE__
+#include <os/signpost.h>
+extern const os_log_t PONS_LOG;
+#  define SIGNPOST_BEGIN(tag, ...) if (__builtin_available(macOS 10.14, *)) { os_signpost_interval_begin(PONS_LOG, tag, __VA_ARGS__); }
+#  define SIGNPOST_END(tag, ...) if (__builtin_available(macOS 10.14, *)) { os_signpost_interval_end(PONS_LOG, tag, __VA_ARGS__); }
+#  define SIGNPOST_TAG(tag) os_signpost_id_t tag; if (__builtin_available(macOS 10.14, *)) { tag = os_signpost_id_generate(PONS_LOG); }
+#else
+#  define SIGNPOST_BEGIN(...)
+#  define SIGNPOST_END(...)
+#  define SIGNPOST_TAG(tag)
+#endif
 #include "DirPaths.h"
 #include "ScriptParser.h"
 #include "DirtyRect.h"
