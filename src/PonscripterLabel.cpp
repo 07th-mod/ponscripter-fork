@@ -27,6 +27,7 @@
 #include "PonscripterMessage.h"
 #include "resources.h"
 #include <ctype.h>
+#include <sys/stat.h>
 
 #if defined(USE_PPC_GFX)
 # if defined(__linux__) || (defined(__FreeBSD__) && __FreeBSD__ >= 12)
@@ -893,6 +894,13 @@ pstring Steam_GetSavePath(const pstring& local_savedir) {
     }
     savelocContent = pstring(pstr_split_first(savelocContent, '\n').first).trim();
     if (savelocContent) {
+        struct stat info;
+        if (stat(path, &info) != 0 || !S_ISDIR(info.st_mode))
+        {
+            PonscripterMessage(Error, "Last Save Location Not Found", "The last used save location, '" + savelocContent + "', can't be opened.\n\nIf this is a Steam copy of the game, you should edit the contents of the " + saveloc + " file so that it is blank to use the default Steam location. You can also manually edit it to set the save folder.\n\nIf this isn't actually a Steam copy of the game, delete the file " + saveloc);
+            exit(-1);
+        }
+
         return savelocContent;
     }
     
