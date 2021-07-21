@@ -883,11 +883,10 @@ pstring Steam_GetSavePath(const pstring& local_savedir) {
     pstring saveloc = savedirdir + "saveloc.txt";
 
     FILE* savelocfile = fopen(saveloc, "r");
-    char path[512];
+    char path[512] = { 0 };
     pstring savelocContent;
-    path[0] = 0;
     if (savelocfile) {
-        while (fread(path, 1, sizeof(path), savelocfile)) {
+        while (fread(path, 1, sizeof(path)-1, savelocfile)) {
             savelocContent += path;
         }
         fclose(savelocfile);
