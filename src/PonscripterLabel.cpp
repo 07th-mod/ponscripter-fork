@@ -936,7 +936,8 @@ pstring Steam_GetSavePath(const pstring& local_savedir) {
     }
 
     if (savelocfile) {
-        PonscripterMessage(Error, "Steam Not Running", "Steam needs to be running to detect the appropriate save data location.  Please relaunch the game with Steam.  If this isn't actually a steam copy of the game, delete the file " + saveloc);
+        PonscripterMessage(Error, "Initial Save Location Setup - Steam Not Running", "Steam needs to be running to setup the save location.\n\nPlease relaunch the game with Steam running.\n\nIf this isn't actually a steam copy of the game, delete the file " + saveloc);
+        exit(-1);
     }
 
     fprintf(stderr, "Unable to get steam's save path; falling back to relative save path.\n");
