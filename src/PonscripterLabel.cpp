@@ -894,6 +894,13 @@ pstring Steam_GetSavePath(const pstring& local_savedir) {
     }
     savelocContent = pstring(pstr_split_first(savelocContent, '\n').first).trim();
     if (savelocContent) {
+        // Make sure there is some kind of slash at the end, otherwise the path will be interpreted as a file instead of a directory
+        // This only should happen if the saveloc file is edited manually, and the user does not add a slash.
+        if(!(savelocContent.ends_with("/") || savelocContent.ends_with("\\")))
+        {
+            savelocContent += "/";
+        }
+
         struct stat info;
         if (stat(path, &info) != 0 || !S_ISDIR(info.st_mode))
         {
