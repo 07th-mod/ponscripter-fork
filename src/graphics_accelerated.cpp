@@ -104,6 +104,7 @@ void alphaMaskBlendConst_Basic(SDL_Surface* dst, SDL_Surface *s1, SDL_Surface *s
     }
 }
 
+#ifdef USE_X86_GFX
 enum Manufacturer {
     MF_UNKNOWN,
     MF_INTEL,
@@ -131,6 +132,7 @@ static bool hasFastPSHUFB(Manufacturer mf, int eax, int ecx) {
     }
     return true;
 }
+#endif
 
 AcceleratedGraphicsFunctions AcceleratedGraphicsFunctions::accelerated() {
     AcceleratedGraphicsFunctions out;
