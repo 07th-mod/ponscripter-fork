@@ -45,8 +45,12 @@ elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	chrpath -r "\$ORIGIN/$LIBFOLDER:." src/ponscr
 else
 	# Windows build
+	# TODO: Disable sanitization for now, just want to make sure clang builds work at all
+	# export CFLAGS="-fsanitize=address"
+	# export CXXFLAGS="-fsanitize=address"
+	# export LDFLAGS="-fsanitize=address"
 	$mingw32 ./configure $STEAM
-	$mingw32 make -j2
+	$mingw32 make -j1
 fi
 
 cd src
