@@ -27,6 +27,7 @@
 #include "PonscripterMessage.h"
 #include "resources.h"
 #include <ctype.h>
+#include <sys/stat.h>
 
 #if defined(USE_PPC_GFX)
 # if defined(__linux__) || (defined(__FreeBSD__) && __FreeBSD__ >= 12)
@@ -883,17 +884,30 @@ pstring Steam_GetSavePath(const pstring& local_savedir) {
     pstring saveloc = savedirdir + "saveloc.txt";
 
     FILE* savelocfile = fopen(saveloc, "r");
-    char path[512];
+    char path[512] = { 0 };
     pstring savelocContent;
-    path[0] = 0;
     if (savelocfile) {
-        while (fread(path, 1, sizeof(path), savelocfile)) {
+        while (fread(path, 1, sizeof(path)-1, savelocfile)) {
             savelocContent += path;
         }
         fclose(savelocfile);
     }
     savelocContent = pstring(pstr_split_first(savelocContent, '\n').first).trim();
     if (savelocContent) {
+        // Make sure there is some kind of slash at the end, otherwise the path will be interpreted as a file instead of a directory
+        // This only should happen if the saveloc file is edited manually, and the user does not add a slash.
+        if(!(savelocContent.ends_with("/") || savelocContent.ends_with("\\")))
+        {
+            savelocContent += "/";
+        }
+
+        struct stat info;
+        if (stat(path, &info) != 0 || !S_ISDIR(info.st_mode))
+        {
+            PonscripterMessage(Error, "Last Save Location Not Found", "The last used save location, '" + savelocContent + "', can't be opened.\n\nIf this is a Steam copy of the game, you should edit the contents of the " + saveloc + " file so that it is blank to use the default Steam location. You can also manually edit it to set the save folder.\n\nIf this isn't actually a Steam copy of the game, delete the file " + saveloc);
+            exit(-1);
+        }
+
         return savelocContent;
     }
     
@@ -922,7 +936,8 @@ pstring Steam_GetSavePath(const pstring& local_savedir) {
     }
 
     if (savelocfile) {
-        PonscripterMessage(Error, "Steam Not Running", "Steam needs to be running to detect the appropriate save data location.  Please relaunch the game with Steam.  If this isn't actually a steam copy of the game, delete the file " + saveloc);
+        PonscripterMessage(Error, "Initial Save Location Setup - Steam Not Running", "Steam needs to be running to setup the save location.\n\nPlease relaunch the game with Steam running.\n\nIf this isn't actually a steam copy of the game, delete the file " + saveloc);
+        exit(-1);
     }
 
     fprintf(stderr, "Unable to get steam's save path; falling back to relative save path.\n");

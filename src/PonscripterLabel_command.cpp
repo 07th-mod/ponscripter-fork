@@ -2286,14 +2286,15 @@ int PonscripterLabel::gettabCommand(const pstring& cmd)
 int PonscripterLabel::getspsizeCommand(const pstring& cmd)
 {
     int no = script_h.readIntValue();
+    int multiplier = multiplier_style <= ScriptHandler::UMINEKO ? 1 : res_multiplier;
 
     script_h.readIntExpr().mutate(
         (sprite_info[no].pos.w * screen_ratio2 / screen_ratio1) /
-        res_multiplier
+        multiplier
     );
     script_h.readIntExpr().mutate(
         (sprite_info[no].pos.h * screen_ratio2 / screen_ratio1) /
-        res_multiplier
+        multiplier
     );
     if (script_h.hasMoreArgs())
         script_h.readIntExpr().mutate(sprite_info[no].num_of_cells);
