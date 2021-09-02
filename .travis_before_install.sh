@@ -61,7 +61,7 @@ elif [ "$TRAVIS_OS_NAME" == "windows" ]; then
 	export mingw32="$msys2 -mingw32 -full-path -here -c "\"\$@"\" --"
 	export clang32="$msys2 -clang32 -full-path -here -c "\"\$@"\" --"
 	export msys2+=" -msys2 -c "\"\$@"\" --"
-	$msys2 pacman --sync --noconfirm --needed base-devel mingw-w64-i686-clang make autoconf automake-wrapper
+	$msys2 pacman --sync --noconfirm --needed base-devel mingw-w64-clang-i686-clang mingw-w64-clang-i686-compiler-rt make autoconf automake-wrapper
 	## Install more MSYS2 packages from https://packages.msys2.org/base here
 	taskkill //IM gpg-agent.exe //F || true # https://travis-ci.community/t/4967
 fi
