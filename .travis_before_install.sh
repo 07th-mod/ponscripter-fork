@@ -54,13 +54,12 @@ if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 elif [ "$TRAVIS_OS_NAME" == "windows" ]; then
 	[[ ! -f C:/tools/msys64/msys2_shell.cmd ]] && rm -rf C:/tools/msys64
 	choco upgrade --no-progress -y msys2
-	export msys2='cmd //C RefreshEnv.cmd '
-	export msys2+='& set MSYS=winsymlinks:nativestrict '
-	export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
-	export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
-	export mingw32="$msys2 -mingw32 -full-path -here -c "\"\$@"\" --"
-	export clang32="$msys2 -clang32 -full-path -here -c "\"\$@"\" --"
-	export msys2+=" -msys2 -c "\"\$@"\" --"
+	export msys2_nosystem='cmd //C RefreshEnv.cmd '
+	export msys2_nosystem+='& set MSYS=winsymlinks:nativestrict '
+	export msys2_nosystem+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
+	export mingw64="$msys2_nosystem -mingw64 -full-path -here -c "\"\$@"\" --"
+	export mingw32="$msys2_nosystem -mingw32 -full-path -here -c "\"\$@"\" --"
+	export msys2="$msys2_nosystem -msys2 -c "\"\$@"\" --"
 
 	## Install more MSYS2 packages from https://packages.msys2.org/base here
 	taskkill //IM gpg-agent.exe //F || true # https://travis-ci.community/t/4967

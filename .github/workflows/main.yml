@@ -48,7 +48,7 @@ jobs:
           echo "msys2=$msys2" >> $GITHUB_ENV
           echo "mingw64=$mingw64" >> $GITHUB_ENV
           echo "mingw32=$mingw32" >> $GITHUB_ENV
-          echo "clang32=$clang32" >> $GITHUB_ENV
+          echo "msys2_nosystem=$msys2_nosystem" >> $GITHUB_ENV
         env:
           NODEP: ${{ matrix.nodep }}
         shell: bash

@@ -44,7 +44,8 @@ elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	fi
 	chrpath -r "\$ORIGIN/$LIBFOLDER:." src/ponscr
 else
-	$clang32 ./.clang_run.sh
+	set MSYSTEM=CLANG32
+	$msys2_nosystem ./.clang_run.sh
 fi
 
 cd src
