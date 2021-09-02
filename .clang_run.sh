@@ -1,3 +1,5 @@
+# Windows Clang build
+
 set -e
 
 echo "----- RUNNNING .clang_run.sh ---------"
@@ -10,12 +12,6 @@ echo "Include = /etc/pacman.d/mirrorlist.mingw" >> /etc/pacman.conf
 echo "----- Installing pacman packages ---------"
 pacman -Syu --noconfirm --needed -y base-devel clang32/mingw-w64-clang-i686-clang clang32/mingw-w64-clang-i686-compiler-rt make autoconf automake-wrapper
 
-# Windows build
-# TODO: Disable sanitization for now, just want to make sure clang builds work at all
-# export CFLAGS="-fsanitize=address"
-# export CXXFLAGS="-fsanitize=address"
-# export LDFLAGS="-fsanitize=address"
-
 # Download and use prebuilt SDL2_mixer. This relies on the configure/make not clearing the src/extlib folder, if that behavior is changed this may not work.
 echo "----- Copying prebuilt SDL32 mixer to src/extlib ---------"
 curl -s https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.0-mingw.tar.gz | tar xvz
@@ -27,5 +23,15 @@ rm -rf SDL2_mixer-2.0.0
 echo "----- Starting build ---------"
 export CC="clang"
 export CXX="clang++"
+
+# Enable adresss sanitizer
+export CFLAGS="-fsanitize=address"
+export CXXFLAGS="-fsanitize=address"
+export LDFLAGS="-fsanitize=address"
+
+# Disable Ponscripter's stdio redirect in SDL_win32_main.c to view asan's output on crash (asan doesn't seem to work with output redirection)
+# Using CPPFLAGS doesn't seem to work
+export CFLAGSEXTRA="-DNO_STDIO_REDIRECT"
+
 ./configure $STEAM --unsupported-compiler --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
 make -j1
