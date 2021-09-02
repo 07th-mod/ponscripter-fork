@@ -59,6 +59,7 @@ elif [ "$TRAVIS_OS_NAME" == "windows" ]; then
 	export msys2+='& C:\\tools\\msys64\\msys2_shell.cmd -defterm -no-start'
 	export mingw64="$msys2 -mingw64 -full-path -here -c "\"\$@"\" --"
 	export mingw32="$msys2 -mingw32 -full-path -here -c "\"\$@"\" --"
+	export clang32="$msys2 -clang32 -full-path -here -c "\"\$@"\" --"
 	export msys2+=" -msys2 -c "\"\$@"\" --"
 	$msys2 pacman --sync --noconfirm --needed base-devel mingw-w64-i686-clang make autoconf automake-wrapper
 	## Install more MSYS2 packages from https://packages.msys2.org/base here

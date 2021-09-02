@@ -56,8 +56,8 @@ else
 	rm -rf SDL2_mixer-2.0.0
 
 	# Use prebuilt SDL2_mixer, but also compile libvorbis/libogg so the engine can statically link to that. Prevents no audio / audio crash issue.
-	$mingw32 ./configure $STEAM --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
-	$mingw32 make -j1
+	$clang32 ./configure $STEAM --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
+	$clang32 make -j1
 fi
 
 cd src
