@@ -52,7 +52,7 @@ else
 
 	# Download and use prebuilt SDL2_mixer. This relies on the configure/make not clearing the src/extlib folder, if that behavior is changed this may not work.
 	curl -s https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-2.0.0-mingw.tar.gz | tar xvz
-	cp -rf SDL2_mixer-2.0.0/x86_64-w64-mingw32/* src/extlib
+	cp -rf SDL2_mixer-2.0.0/i686-w64-mingw32/* src/extlib
 	rm -rf SDL2_mixer-2.0.0
 
 	# Use prebuilt SDL2_mixer, but also compile libvorbis/libogg so the engine can statically link to that. Prevents no audio / audio crash issue.
