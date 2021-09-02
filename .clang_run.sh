@@ -23,6 +23,9 @@ cp -rf SDL2_mixer-2.0.0/i686-w64-mingw32/* src/extlib
 rm -rf SDL2_mixer-2.0.0
 
 # Use prebuilt SDL2_mixer, but also compile libvorbis/libogg so the engine can statically link to that. Prevents no audio / audio crash issue.
+# Force usage of clang
 echo "----- Starting build ---------"
-./configure $STEAM --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
+export CC="clang"
+export CXX="clang++"
+./configure $STEAM --unsupported-compiler --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
 make -j1

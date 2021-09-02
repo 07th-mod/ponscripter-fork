@@ -344,58 +344,56 @@ else
 fi
 
 # Compiler (gcc, g++, icpc)
-CC=clang
-CXX=clang++
-# if [ -z "$CC" ]; then CC=gcc; fi
-# if $UNSUPPORTED_COMPILER
-# then
-#     echo "Unsupported compiler requested; please don't complain if anything doesn't work!"
-# else
-#     $echo_n "Checking C compiler... ${nobr}"
-#     CC_TMP=`($CC --version) 2>/dev/null | head -1`
-#     case "$CC_TMP" in
-#     gcc* | *apple*gcc* | *-*-gcc\ * | *-gcc??GCC*) CC_VER=`expr "x$CC_TMP" : 'x.* \(.*\)$'`; echo "gcc $CC_VER" ;;
-#     icc*) echo icc ;;
-#     *)  echo "error"
-#         cat <<-_ERR
+if [ -z "$CC" ]; then CC=gcc; fi
+if $UNSUPPORTED_COMPILER
+then
+    echo "Unsupported compiler requested; please don't complain if anything doesn't work!"
+else
+    $echo_n "Checking C compiler... ${nobr}"
+    CC_TMP=`($CC --version) 2>/dev/null | head -1`
+    case "$CC_TMP" in
+    gcc* | *apple*gcc* | *-*-gcc\ * | *-gcc??GCC*) CC_VER=`expr "x$CC_TMP" : 'x.* \(.*\)$'`; echo "gcc $CC_VER" ;;
+    icc*) echo icc ;;
+    *)  echo "error"
+        cat <<-_ERR
 
-# 	Compiler not recognised, or no compiler found.
-# 	Please install a supported C compiler (e.g. gcc). If you already have one installed, try setting the environment variable CC appropriately.
-# 	If you want to use an unsupported compiler, set CC appropriately and run configure with the --unsupported-compiler option; you will be on your own if anything doesn't work.
-# 	_ERR
-#         exit 1 ;;
-#     esac
-# fi
+	Compiler not recognised, or no compiler found.
+	Please install a supported C compiler (e.g. gcc). If you already have one installed, try setting the environment variable CC appropriately.
+	If you want to use an unsupported compiler, set CC appropriately and run configure with the --unsupported-compiler option; you will be on your own if anything doesn't work.
+	_ERR
+        exit 1 ;;
+    esac
+fi
 
-# if [ -z "$CXX" ]
-# then case x$CC in
-# xgcc | x) CXX=g++ ;;
-# xicc) CXX=icpc ;;
-# *) CXX=$CC ;;
-# esac
-# fi
+if [ -z "$CXX" ]
+then case x$CC in
+xgcc | x) CXX=g++ ;;
+xicc) CXX=icpc ;;
+*) CXX=$CC ;;
+esac
+fi
 
-# CXX_TMP=`($CXX --version) 2>/dev/null | head -1`
-# if not $UNSUPPORTED_COMPILER
-# then
-#     $echo_n "Checking C++ compiler... ${nobr}"
-#     case "$CXX_TMP" in
-#     g++* | *apple*g++* | *-*-g++\ * | *-g++??GCC*) CXX_VER=`expr "x$CXX_TMP" : 'x.* \(.*\)$'`; echo "g++ $CXX_VER" ;;
-#     icpc*) echo icpc ;;
-#     *)  echo "error"
-#         cat <<-_ERR
+CXX_TMP=`($CXX --version) 2>/dev/null | head -1`
+if not $UNSUPPORTED_COMPILER
+then
+    $echo_n "Checking C++ compiler... ${nobr}"
+    case "$CXX_TMP" in
+    g++* | *apple*g++* | *-*-g++\ * | *-g++??GCC*) CXX_VER=`expr "x$CXX_TMP" : 'x.* \(.*\)$'`; echo "g++ $CXX_VER" ;;
+    icpc*) echo icpc ;;
+    *)  echo "error"
+        cat <<-_ERR
 
-# 	Compiler not recognised, or no compiler found.
-# 	Please install a supported C++ compiler (e.g. g++). If you already have one installed, try setting the environment variable CXX appropriately.
-# 	If you want to use an unsupported compiler, set CXX appropriately and run configure with the --unsupported-compiler option; you will be on your own if anything doesn't work.
-# 	_ERR
-#         exit 1 ;;
-#     esac
-# fi
+	Compiler not recognised, or no compiler found.
+	Please install a supported C++ compiler (e.g. g++). If you already have one installed, try setting the environment variable CXX appropriately.
+	If you want to use an unsupported compiler, set CXX appropriately and run configure with the --unsupported-compiler option; you will be on your own if anything doesn't work.
+	_ERR
+        exit 1 ;;
+    esac
+fi
 
-# case "$CXX_TMP" in
-# g++* | *apple*g++*) CFLAGSEXTRA=-Wall ;;
-# esac
+case "$CXX_TMP" in
+g++* | *apple*g++*) CFLAGSEXTRA=-Wall ;;
+esac
 
 # Custom graphics using intrinsics (requires GCC 4.3+)
 
