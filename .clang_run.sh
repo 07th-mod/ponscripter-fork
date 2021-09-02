@@ -7,10 +7,6 @@ echo "----- Adding clang32 repo to /etc/pacman.conf ---------"
 echo "[clang32]" >> /etc/pacman.conf
 echo "Include = /etc/pacman.d/mirrorlist.mingw" >> /etc/pacman.conf
 
-echo "----- Contents of /etc/pacman.conf after modifiction ---------"
-echo "$(cat /etc/pacman.conf)"
-
-
 echo "----- Installing pacman packages ---------"
 pacman -Syu --noconfirm --needed -y base-devel clang32/mingw-w64-clang-i686-clang clang32/mingw-w64-clang-i686-compiler-rt make autoconf automake-wrapper
 
