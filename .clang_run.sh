@@ -25,9 +25,9 @@ export CC="clang"
 export CXX="clang++"
 
 # Enable adresss sanitizer
-export CFLAGS="-fsanitize=address -fno-optimize-sibling-calls"
-export CXXFLAGS="-fsanitize=address -fno-optimize-sibling-calls"
-export LDFLAGS="-fsanitize=address -fno-optimize-sibling-calls"
+export CFLAGS="-fsanitize=address -fno-optimize-sibling-calls -fno-omit-frame-pointer"
+export CXXFLAGS="-fsanitize=address -fno-optimize-sibling-calls -fno-omit-frame-pointer"
+export LDFLAGS="-fsanitize=address -fno-optimize-sibling-calls -fno-omit-frame-pointer"
 
 # Disable Ponscripter's stdio redirect in SDL_win32_main.c to view asan's output on crash (asan doesn't seem to work with output redirection)
 # Using CPPFLAGS doesn't seem to work. CFLAGSEXTRA will eventually be used in PSCFLAGS, which eventually gets passed to SDL_win32_main.c
