@@ -67,19 +67,19 @@ jobs:
         with:
           name: ${{ steps.build.outputs.name }}
           path: |
-            ponscr-question.zip
-            ponscr-answer.zip
+            ponscr-question.7z
+            ponscr-answer.7z
       - name: Rename Files
         run: |
-          mv ponscr-question.zip umineko-$(cat buildinfo.txt)-question.zip || true
-          mv ponscr-answer.zip umineko-$(cat buildinfo.txt)-answer.zip || true
+          mv ponscr-question.7z umineko-$(cat buildinfo.txt)-question.7z || true
+          mv ponscr-answer.7z umineko-$(cat buildinfo.txt)-answer.7z || true
         shell: bash
       # Publish a release, only on tagged commits
       - name: Release (tag)
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/') # only publish tagged commits
         with:
-          files: umineko-*.zip
+          files: umineko-*.7z
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
