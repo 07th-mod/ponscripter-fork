@@ -52,8 +52,8 @@ cd src
 if [ "$TRAVIS_OS_NAME" == "windows" ]; then
 	cp ponscr.exe Umineko1to4.exe
 	cp ponscr.exe Umineko5to8.exe
-	7z a -aoa -mx=9 -md=256m -mmt=3 ../ponscr-question.7z Umineko1to4.exe llvm-symbolizer.exe *.dll
-	7z a -aoa -mx=9 -md=256m -mmt=3 ../ponscr-answer.7z Umineko5to8.exe llvm-symbolizer.exe *.dll
+	7z a -aoa -mx=9 -md=256m -mmt=3 ../ponscr-question.7z Umineko1to4.exe llvm-symbolizer.exe *.dll ../misc/umineko_debug_mode.bat
+	7z a -aoa -mx=9 -md=256m -mmt=3 ../ponscr-answer.7z Umineko5to8.exe llvm-symbolizer.exe *.dll ../misc/umineko_debug_mode.bat
 elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	cp ponscr Umineko1to4
 	cp ponscr Umineko5to8
