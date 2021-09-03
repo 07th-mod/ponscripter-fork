@@ -33,5 +33,8 @@ export LDFLAGS="-fsanitize=address"
 # Using CPPFLAGS doesn't seem to work. CFLAGSEXTRA will eventually be used in PSCFLAGS, which eventually gets passed to SDL_win32_main.c
 export CFLAGSEXTRA="-DNO_STDIO_REDIRECT"
 
+# this disables optimization and adds some debug flags(-O0)
+export DEBUG=1
+
 ./configure $STEAM --unsupported-compiler --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
 make -j1
