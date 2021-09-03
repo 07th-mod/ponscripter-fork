@@ -1011,7 +1011,7 @@ cat >> $MAKEFILE <<_EOF
 .SUFFIXES: $OBJ .cpp .h .c
 
 ifdef DEBUG
-PSCFLAGS += -g -ggdb3 -O0 -pipe -Wpointer-arith $WERROR $STRICT
+PSCFLAGS += -g -ggdb3 -O1 -pipe -Wpointer-arith $WERROR $STRICT
 #export LDFLAGS  := -pg \$(LDFLAGS)
 else
 PSCFLAGS += -O3 -fomit-frame-pointer -pipe -Wpointer-arith $WERROR $STRICT
