@@ -1195,6 +1195,7 @@ int PonscripterLabel::init(const char* preferred_script)
             bool havefp = false;
             GETFOLDERPATH gfp =
                 GETFOLDERPATH(GetProcAddress(shdll, "SHGetFolderPathA"));
+            #ifndef NO_STDIO_REDIRECT
             if (gfp) {
                 HRESULT res = gfp(0, CSIDL_APPDATA, 0, 0, hpath); //user-based
                 if (res != S_FALSE && res != E_FAIL && res != E_INVALIDARG) {
@@ -1203,6 +1204,7 @@ int PonscripterLabel::init(const char* preferred_script)
                             DELIMITER, "Ponscripter");
                 }
             }
+            #endif
             typedef HINSTANCE (WINAPI *SHELLEXECUTE)(HWND, LPCSTR, LPCSTR,
                                LPCSTR, LPCSTR, int);
             SHELLEXECUTE shexec =
