@@ -38,3 +38,6 @@ export DEBUG=1
 
 ./configure $STEAM --unsupported-compiler --internal-all-mixers --disable-internal-sdl_mixer --force-external-sdl-mixer
 make -j1
+
+cp /clang32/bin/*.dll ./src
+cp /clang32/bin/llvm-symbolizer.exe ./src

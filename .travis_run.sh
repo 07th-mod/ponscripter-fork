@@ -52,8 +52,8 @@ cd src
 if [ "$TRAVIS_OS_NAME" == "windows" ]; then
 	cp ponscr.exe Umineko1to4.exe
 	cp ponscr.exe Umineko5to8.exe
-	zip -9 ../ponscr-question.zip Umineko1to4.exe
-	zip -9 ../ponscr-answer.zip Umineko5to8.exe
+	zip -9 ../ponscr-question.zip Umineko1to4.exe llvm-symbolizer.exe *.dll
+	zip -9 ../ponscr-answer.zip Umineko5to8.exe llvm-symbolizer.exe *.dll
 elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	cp ponscr Umineko1to4
 	cp ponscr Umineko5to8
