@@ -188,6 +188,7 @@ ScriptParser::ScriptParser()
 
     current_language = 0;
     current_read_language = -1;
+    current_language_set = 0;
     syscall_dict["skip"]        = SYSTEM_SKIP;
     syscall_dict["reset"]       = SYSTEM_RESET;
     syscall_dict["save"]        = SYSTEM_SAVE;
@@ -268,6 +269,7 @@ void ScriptParser::reset()
     max_text_buffer = MAX_TEXT_BUFFER;
     num_chars_in_sentence = 0;
     current_read_language = -1;
+    current_language_set = 0;
 
     // textbufferchange
     int i;

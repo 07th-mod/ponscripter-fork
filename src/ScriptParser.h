@@ -379,6 +379,7 @@ protected:
     TextBuffer *start_text_buffer[2], *current_text_buffer[2];
     int current_language;
     int current_read_language;
+    int current_language_set;
 
     void TextBuffer_dumpstate(int = 0);
     int max_text_buffer;

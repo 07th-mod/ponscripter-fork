@@ -1739,6 +1739,7 @@ int PonscripterLabel::getreadlangCommand(const pstring& cmd)
 int PonscripterLabel::showlangenCommand(const pstring& cmd)
 {
     current_language = 0;
+    current_language_set = 1;
     //loadSaveFile(15);
     text_info.fill(0, 0, 0, 0);
     flush(refreshMode(), &sentence_font_info.pos);
@@ -1749,6 +1750,7 @@ int PonscripterLabel::showlangenCommand(const pstring& cmd)
 int PonscripterLabel::showlangjpCommand(const pstring& cmd)
 {
     current_language = 1;
+    current_language_set = 1;
     //loadSaveFile(15);
     text_info.fill(0, 0, 0, 0);
     flush(refreshMode(), &sentence_font_info.pos);
@@ -1759,6 +1761,7 @@ int PonscripterLabel::showlangjpCommand(const pstring& cmd)
 int PonscripterLabel::langenCommand(const pstring& cmd)
 {
     current_read_language = 0;
+    current_language_set = 1;
 
     return RET_CONTINUE;
 }
@@ -1769,6 +1772,7 @@ int PonscripterLabel::langjpCommand(const pstring& cmd)
     //    saveSaveFile(15);
     //}
     current_read_language = 1;
+    current_language_set = 1;
 
     return RET_CONTINUE;
 }
@@ -1776,6 +1780,7 @@ int PonscripterLabel::langjpCommand(const pstring& cmd)
 int PonscripterLabel::langallCommand(const pstring& cmd)
 {
     current_read_language = -1;
+    current_language_set = 1;
 
     return RET_CONTINUE;
 }
