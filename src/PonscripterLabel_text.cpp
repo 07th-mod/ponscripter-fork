@@ -432,7 +432,7 @@ int PonscripterLabel::clickNewPage(bool display_char)
 {
     const char* c = script_h.getStrBuf(string_buffer_offset);
 
-    if (current_read_language != -1 && current_read_language != current_language) {
+    if (current_read_language == -1 || current_read_language == current_language) {
         clickstr_state = CLICK_NEWPAGE;
     }
 
