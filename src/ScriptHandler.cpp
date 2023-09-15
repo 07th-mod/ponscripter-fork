@@ -70,7 +70,7 @@ ScriptHandler::ScriptHandler()
     screen_width = 640;
     screen_height = 480;
     res_multiplier = 2; // Default to 2x mode for Umineko
-    multiplier_style = UMINEKO;
+    multiplier_style = FULL;
     global_variable_border = 200;
 
     // Prefer Ponscripter files over NScripter files, and prefer
