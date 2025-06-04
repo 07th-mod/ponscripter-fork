@@ -844,7 +844,26 @@ void PonscripterLabel::keyPressEvent(SDL_KeyboardEvent* event)
 
     if (shift_pressed_status && event->keysym.sym == SDLK_q &&
 	current_mode == NORMAL_MODE) {
-        endCommand("end");
+            SDL_MessageBoxButtonData closeButtons[] = {
+                {0, 0, current_language == 1 ? "いいえ" : "No"},
+                {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, current_language == 1 ? "はい" : "Yes"},
+            };
+            SDL_MessageBoxData closeBoxData = {
+                SDL_MESSAGEBOX_WARNING, /* .flags */
+                screen, /* .window */
+                current_language == 1 ? "終了" : "Close", /* .title */
+                current_language == 1 ? "ゲームを終了しますか？" : "Are you sure you want to quit?", /* .message */
+                SDL_arraysize(closeButtons), /* .numbuttons */
+                closeButtons, /* .buttons */
+                NULL
+            };
+	    int closeButtonId;
+	    SDL_RaiseWindow(screen);
+	    if (SDL_ShowMessageBox(&closeBoxData, &closeButtonId) < 0) {
+		endCommand("end");
+	    } else if (closeButtonId == 1) {
+		endCommand("end");
+	    }
     }
 
     if ((trap_mode & TRAP_LEFT_CLICK)
