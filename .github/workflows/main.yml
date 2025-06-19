@@ -67,7 +67,7 @@ jobs:
           echo "name=ponscr-$(cat buildinfo.txt)" >> $GITHUB_OUTPUT
         shell: bash
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build.outputs.name }}
           path: |
