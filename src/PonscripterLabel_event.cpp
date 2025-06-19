@@ -844,26 +844,38 @@ void PonscripterLabel::keyPressEvent(SDL_KeyboardEvent* event)
 
     if (shift_pressed_status && event->keysym.sym == SDLK_q &&
 	current_mode == NORMAL_MODE) {
-            SDL_MessageBoxButtonData closeButtons[] = {
-                {0, 0, current_language == 1 ? "いいえ" : "No"},
-                {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, current_language == 1 ? "はい" : "Yes"},
-            };
-            SDL_MessageBoxData closeBoxData = {
-                SDL_MESSAGEBOX_WARNING, /* .flags */
-                screen, /* .window */
-                current_language == 1 ? "終了" : "Close", /* .title */
-                current_language == 1 ? "ゲームを終了しますか？" : "Are you sure you want to quit?", /* .message */
-                SDL_arraysize(closeButtons), /* .numbuttons */
-                closeButtons, /* .buttons */
-                NULL
-            };
-	    int closeButtonId;
-	    SDL_RaiseWindow(screen);
-	    if (SDL_ShowMessageBox(&closeBoxData, &closeButtonId) < 0) {
-		endCommand("end");
-	    } else if (closeButtonId == 1) {
-		endCommand("end");
-	    }
+
+        // Define "No" Button (ID = 0) and "Yes" Button (ID = 1)
+        SDL_MessageBoxButtonData closeButtons[] = {
+            {0, 0, current_language == 1 ? "いいえ" : "No"},
+            {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 1, current_language == 1 ? "はい" : "Yes"},
+        };
+
+        // Define the "Are you sure you want to quit" dialog box
+        SDL_MessageBoxData closeBoxData = {
+            SDL_MESSAGEBOX_WARNING, /* .flags */
+            screen, /* .window */
+            current_language == 1 ? "終了" : "Close", /* .title */
+            current_language == 1 ? "ゲームを終了しますか？" : "Are you sure you want to quit?", /* .message */
+            SDL_arraysize(closeButtons), /* .numbuttons */
+            closeButtons, /* .buttons */
+            NULL
+        };
+
+        // Raise and focus the game window  I think (?)
+        SDL_RaiseWindow(screen);
+
+        // Show the message box, then handle the result of the message box
+        int closeButtonId;
+        if (SDL_ShowMessageBox(&closeBoxData, &closeButtonId) < 0) {
+            // If SDL_ShowMessageBox return value is negative, an error has occured
+            // For now, quit the game if this happens, but maybe should just do nothing if there is an error.
+            endCommand("end");
+        } else if (closeButtonId == 1) {
+            // Reaching here means SDL_ShowMessageBox(...) call was OK (no error)
+            // If button ID is 1, then "Yes" button was pressed, so quit the game
+            endCommand("end");
+        }
     }
 
     if ((trap_mode & TRAP_LEFT_CLICK)
