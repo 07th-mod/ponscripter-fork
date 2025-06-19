@@ -8,10 +8,10 @@ jobs:
     strategy:
       matrix:
         steam: ["-steam", ""]
-        os: [windows-2019, macos-11, ubuntu-20.04]
+        os: [windows-2022, macos-13, ubuntu-latest]
         isinclude: [false] # Makes include add new jobs instead of editing existing ones
         include:
-          - os: ubuntu-20.04
+          - os: ubuntu-latest
             nodep: "-nodep"
             isinclude: true
     runs-on: ${{ matrix.os }}
@@ -67,7 +67,7 @@ jobs:
           echo "name=ponscr-$(cat buildinfo.txt)" >> $GITHUB_OUTPUT
         shell: bash
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.build.outputs.name }}
           path: |
