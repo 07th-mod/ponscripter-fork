@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         steam: ["-steam", ""]
-        os: [windows-2022, macos-11, ubuntu-latest]
+        os: [windows-2022, macos-13, ubuntu-latest]
         isinclude: [false] # Makes include add new jobs instead of editing existing ones
         include:
           - os: ubuntu-latest
