@@ -86,3 +86,9 @@ jobs:
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # In case of a Docker Error, print it out to stderr so we can debug it better
+      - name: Upload Docker Logs on Failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
+        with:
+          shell: bash
