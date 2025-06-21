@@ -91,3 +91,5 @@ jobs:
       - name: Upload Docker Logs on Failure
         if: failure()
         uses: jwalton/gh-docker-logs@v2
+        with:
+          shell: bash
