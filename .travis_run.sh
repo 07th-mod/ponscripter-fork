@@ -53,7 +53,7 @@ fi
 
 cd src
 if [ "$TRAVIS_OS_NAME" == "windows" ]; then
-	zip -9 ../ponscr.zip ponscr.exe
+	7z a ../ponscr.zip ponscr.exe
 else
 	zip -9 ../ponscr.zip ponscr
 fi
