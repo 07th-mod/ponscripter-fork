@@ -106,8 +106,6 @@ Makefile*
 /src/SDL2.dll
 /src/resources.cpp
 /src/extlib/bin
-/src/extlib/include
-/src/extlib/lib
 /src/extlib/share
 /doc/*.html
 /doc/*.proc

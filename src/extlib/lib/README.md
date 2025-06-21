@@ -1,0 +1,1 @@
+This folder is deliberately empty to avoid an error when building with Windows MSYS gcc
