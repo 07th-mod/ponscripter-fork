@@ -47,7 +47,7 @@ elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	chrpath -r "\$ORIGIN/$LIBFOLDER:." src/ponscr
 else
 	# Windows build
-	$mingw32 ./configure $STEAM
+	$mingw32 bash -x ./configure $STEAM
 	$mingw32 make -j2
 fi
 
