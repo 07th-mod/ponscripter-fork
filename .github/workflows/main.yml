@@ -6,6 +6,7 @@ env:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         steam: ["-steam", ""]
         os: [windows-2022, macos-13, ubuntu-latest]
