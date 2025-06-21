@@ -16,7 +16,7 @@ SDLSRC   = $(ES)/SDL2-2.0.3
 SDLISRC  = $(ES)/SDL2_image-2.0.0
 ZSRC     = $(ES)/zlib-1.2.3
 PNGSRC   = $(ES)/libpng-1.6.49
-JPEGSRC  = $(ES)/jpeg-6b
+JPEGSRC  = $(ES)/jpeg-9f
 SDLMSRC  = $(ES)/SDL2_mixer-2.0.0
 OGGSRC   = $(ES)/libogg-1.1.3
 VORBSRC  = $(ES)/libvorbis-1.3.4
@@ -136,7 +136,7 @@ $(JPEGSRC)/Makefile:
 
 $(EL)/libjpeg$(LIBSUFFIX): $(JPEGSRC)/Makefile 
 	@echo Building internal libjpeg...
-	@$(MAKE) -C $(JPEGSRC) install-lib $(REDSO)
+	@$(MAKE) -C $(JPEGSRC) install $(REDSO)
 
 #-- SDL_mixer -----------------------------------------------------------------
 
