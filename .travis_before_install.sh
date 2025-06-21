@@ -11,7 +11,7 @@ linux)
 	sudo apt-get update -qq
 	sudo apt-get install -y libasound2-dev ;;
 windows)
-	choco install -y zip unzip ;;
+	choco install -y unzip ;;
 esac
 
 if [ -n "$SSH_KEY" ]; then
