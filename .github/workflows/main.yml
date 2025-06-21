@@ -6,6 +6,7 @@ env:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         steam: ["-steam", ""]
         os: [windows-2022, macos-13, ubuntu-latest]
@@ -90,3 +91,5 @@ jobs:
       - name: Upload Docker Logs on Failure
         if: failure()
         uses: jwalton/gh-docker-logs@v2
+        with:
+          shell: bash
