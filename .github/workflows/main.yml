@@ -67,6 +67,9 @@ jobs:
           fi
           echo "name=ponscr-$(cat buildinfo.txt)" >> $GITHUB_OUTPUT
         shell: bash
+      - name: Show config.log on failure
+        if: failure()
+        run: cat src/extlib/config.log
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
