@@ -47,7 +47,8 @@ elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	chrpath -r "\$ORIGIN/$LIBFOLDER:." src/ponscr
 else
 	# Windows build
-	$mingw32 bash -x ./configure $STEAM
+	# Note: Added -Wno-error=incompatible-pointer-types as new GCC does not allow some of the weird casting in SDL
+	$mingw32 CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" bash -x ./configure $STEAM
 	$mingw32 make -j2
 fi
 
