@@ -585,7 +585,7 @@ fi
 
 echo $ac_n "checking if $compiler static flag $link_static_flag works... $ac_c" 1>&6
 $rm conftest*
-echo 'main(){return(0);}' > conftest.c
+echo 'int main(){return(0);}' > conftest.c
 save_LDFLAGS="$LDFLAGS"
 LDFLAGS="$LDFLAGS $link_static_flag"
 echo "$progname:591: checking if $compiler static flag $link_static_flag works" >&5
