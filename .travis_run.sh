@@ -69,7 +69,8 @@ else
 	fi
 
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
-	$mingw32 make CPPFLAGS="$CPPFLAGS -I$SDL_INCLUDE" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" -j2
+	# NOTE: removed -j2 (2 threads) to possibly give better debug output
+	$mingw32 make CPPFLAGS="$CPPFLAGS -I$SDL_INCLUDE" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types"
 fi
 
 cd src
