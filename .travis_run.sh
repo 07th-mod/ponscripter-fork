@@ -49,7 +49,7 @@ else
 	# Windows build
 	# Note: Added -Wno-error=incompatible-pointer-types as new GCC does not allow some of the weird casting in SDL (?)
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
-	$mingw32 make CFLAGS="-Wno-error=incompatible-pointer-types" -j2
+	$mingw32 make CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" -j2
 fi
 
 cd src
