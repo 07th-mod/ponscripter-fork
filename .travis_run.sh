@@ -48,8 +48,28 @@ elif [ "$TRAVIS_OS_NAME" == "linux" ]; then
 else
 	# Windows build
 	# Note: Added -Wno-error=incompatible-pointer-types as new GCC does not allow some of the weird casting in SDL (?)
+
+	# Try to forcibly include the SDL2 include folder
+	SDL_INCLUDE="$(pwd)/src/win_dll/include/SDL2"
+	echo "SDL_INCLUDE path: $SDL_INCLUDE"
+
+	# Check include folder and SDL.H actually exists
+	if [ -d "$SDL_INCLUDE" ]; then
+		echo "✅ SDL_INCLUDE exists."
+
+		if [ -f "$SDL_INCLUDE/SDL.h" ]; then
+			echo "✅ SDL.h found in SDL_INCLUDE."
+		else
+			echo "❌ SDL.h NOT found in SDL_INCLUDE!"
+			echo "Contents of $SDL_INCLUDE:"
+			ls -l "$SDL_INCLUDE"
+		fi
+	else
+		echo "❌ SDL_INCLUDE does NOT exist!"
+	fi
+
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
-	$mingw32 make CPPFLAGS="$CPPFLAGS -Isrc/win_dll/include/SDL2" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" -j2
+	$mingw32 make CPPFLAGS="$CPPFLAGS -I$SDL_INCLUDE" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" -j2
 fi
 
 cd src
