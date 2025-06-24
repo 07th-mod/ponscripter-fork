@@ -72,7 +72,7 @@ else
 
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
 	# NOTE: removed -j2 (2 threads) to possibly give better debug output
-	$mingw32 make CPPFLAGS="$CPPFLAGS $EXTRA_INCLUDES -Wl,--subsystem,console" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types -Wl,--subsystem,console" LDFLAGS="$LDFLAGS -Wl,--subsystem,console"
+	$mingw32 make CPPFLAGS="$CPPFLAGS $EXTRA_INCLUDES" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types" LDFLAGS="$LDFLAGS -Wl,--subsystem,console"
 fi
 
 cd src
