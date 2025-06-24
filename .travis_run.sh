@@ -71,6 +71,15 @@ else
 	EXTRA_INCLUDES="-I$SDL_INCLUDE -I$(pwd)/src/extlib/src/libpng-1.2.24"
 
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
+
+	# Try to force freetype build to not try to make any executables (compile it first) by adding '-c' flag
+	if $mingw32 make -C src/extlib/src/freetype-2.3.5 CFLAGS="-c -Wno-error=incompatible-pointer-types"; then
+		echo "✅ FreeType build succeeded."
+	else
+		echo "❌ FreeType build failed!" >&2
+		exit 1
+	fi
+
 	# NOTE: removed -j2 (2 threads) to possibly give better debug output
 	$mingw32 make CPPFLAGS="$CPPFLAGS $EXTRA_INCLUDES" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types"
 fi
