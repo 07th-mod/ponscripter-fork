@@ -72,6 +72,12 @@ else
 
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
 
+	# Try to fix line endings for freetype (?)
+	# find src/extlib/src/freetype-2.3.5/builds -type f -exec dos2unix {} \;
+
+	# Ensure freetype is configured first
+	$mingw32 bash -c "cd src/extlib/src/freetype-2.3.5 && CFLAGS='-c -Wno-error=incompatible-pointer-types' ./configure --enable-static --disable-shared"
+
 	# Try to force freetype build to not try to make any executables (compile it first) by adding '-c' flag
 	if $mingw32 make -C src/extlib/src/freetype-2.3.5 CFLAGS="-c -Wno-error=incompatible-pointer-types"; then
 		echo "✅ FreeType build succeeded."
