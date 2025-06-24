@@ -68,9 +68,11 @@ else
 		echo "❌ SDL_INCLUDE does NOT exist!"
 	fi
 
+	EXTRA_INCLUDES="-I$SDL_INCLUDE -I$(pwd)/src/extlib/src/libpng-1.2.24"
+
 	$mingw32 bash -c "CFLAGS='\$CFLAGS -Wno-error=incompatible-pointer-types' ./configure $STEAM"
 	# NOTE: removed -j2 (2 threads) to possibly give better debug output
-	$mingw32 make CPPFLAGS="$CPPFLAGS -I$SDL_INCLUDE" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types"
+	$mingw32 make CPPFLAGS="$CPPFLAGS $EXTRA_INCLUDES" CFLAGS="$CFLAGS -Wno-error=incompatible-pointer-types"
 fi
 
 cd src
