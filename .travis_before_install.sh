@@ -1,8 +1,8 @@
 set -e
 
-if [ -z "$STEAMLESS" ] && [ -z "$SSH_KEY" ]; then
-	echo "Can't get steam API without SSH key, skipping"
-	echo "::warning file=.travis_before_install.sh::Can't download Steam SDK without SSH key so build skipped"
+if [ -z "$STEAMLESS" ] && [ -z "$DOWNLOAD_SERVER" ]; then
+	echo "Can't get steam API without download server key, skipping"
+	echo "::warning file=.travis_before_install.sh::Can't download Steam SDK without download server so build skipped"
 	exit 0
 fi
 
@@ -14,12 +14,7 @@ windows)
 	choco install -y unzip ;;
 esac
 
-if [ -n "$SSH_KEY" ]; then
-	echo "${SSH_KEY}" | base64 --decode > key
-	chmod 600 key
-fi
-
-if [ -z "$STEAMLESS" ] && [ -n "$SSH_KEY" ]; then
+if [ -z "$STEAMLESS" ] && [ -n "$DOWNLOAD_SERVER" ]; then
 	export STEAM="-steam"
 	if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 		export STEAM_RUNTIME_HOST_ARCH=$(dpkg --print-architecture)
@@ -35,14 +30,14 @@ if [ -z "$STEAMLESS" ] && [ -n "$SSH_KEY" ]; then
 	windows) STEAMVER=134;;
 	linux)   STEAMVER=141;;
 	esac
-	scp -o StrictHostKeyChecking=no -i key "${DOWNLOAD_SERVER}/steamworks_sdk_${STEAMVER}.zip" . 2>/dev/null
+	curl -O "${DOWNLOAD_SERVER}/steamworks_sdk_${STEAMVER}.zip" 2>/dev/null
 	unzip -d src/extlib/src/steam-sdk/ "steamworks_sdk_${STEAMVER}.zip"
 	mv src/extlib/src/steam-sdk/sdk/* src/extlib/src/steam-sdk/
 fi
 
 if [ "$TRAVIS_OS_NAME" == "linux" ]; then
 	sudo apt-get install -y chrpath libbz2-dev libvorbis-dev libfreetype6-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-dev libgles2-mesa-dev libglu1-mesa-dev
-	if [ -z "$STEAMLESS" ] && [ -n "$SSH_KEY" ]; then
+	if [ -z "$STEAMLESS" ] && [ -n "$DOWNLOAD_SERVER" ]; then
 		# For i386 steam builds, we build x86_64
 		# sudo dpkg --add-architecture i386
 		# sudo apt-get update -qq
