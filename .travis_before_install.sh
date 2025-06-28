@@ -26,11 +26,13 @@ if [ -z "$STEAMLESS" ] && [ -n "$DOWNLOAD_SERVER" ]; then
 	# Steam SDK
 	# Umineko is great and ships a different version of the steam api dll for each os
 	case "$TRAVIS_OS_NAME" in
-	osx)     STEAMVER=129a;;
-	windows) STEAMVER=134;;
-	linux)   STEAMVER=141;;
+	osx)     STEAMVER=129a; SHA=dbfa112a2ff4a8aee656a3503ba24086f206635493ec48ade0044826b6ed838b; SHASUM="shasum -a 256";;
+	windows) STEAMVER=134;  SHA=68fbc7b8355dc7d51a22d3d2dedfe178e7895861d2707e791d506fb154a0b1f2; SHASUM="sha256sum";;
+	linux)   STEAMVER=141;  SHA=865c597893004559b9098467a5a7d379dbe4b80344605bba26206d6b65fbc19f; SHASUM="sha256sum";;
 	esac
 	curl -O "${DOWNLOAD_SERVER}/steamworks_sdk_${STEAMVER}.zip" 2>/dev/null
+	echo "${SHA}  steamworks_sdk_${STEAMVER}.zip" > sha.txt
+	$SHASUM -c sha.txt
 	unzip -d src/extlib/src/steam-sdk/ "steamworks_sdk_${STEAMVER}.zip"
 	mv src/extlib/src/steam-sdk/sdk/* src/extlib/src/steam-sdk/
 fi
