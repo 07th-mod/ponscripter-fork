@@ -9,10 +9,10 @@ jobs:
       fail-fast: false
       matrix:
         steam: ["-steam", ""]
-        os: [windows-2022, macos-13, ubuntu-latest]
+        os: [windows-2022, macos-13, ubuntu-24.04]
         isinclude: [false] # Makes include add new jobs instead of editing existing ones
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-24.04
             nodep: "-nodep"
             isinclude: true
     runs-on: ${{ matrix.os }}
