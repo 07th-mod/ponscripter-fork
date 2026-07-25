@@ -456,22 +456,48 @@ SDL_Rect Fontinfo::calcUpdatedArea(float start_x, int start_y,
 }
 
 
+// This function expands the dirty area to include the shaded region
+// Normally the area to redraw is just the size of the glyph
+// However, to add a shadow, the glyph is drawn twice:
+// 1. With a slight offset to draw the shadow (black color)
+// 2. Ontop of that, the original glyph is drawn with no offset (original color)
+// For my hacky font border, I draw the shadow 8 times so needed to modify this
+// function to expand the dirty area to cover all 8 shadows.
+//
+// If this is not done correctly, the shadow will partially update (be clipped)
+// and then fully draw once a clickwait occurs which causes a full screen redraw (I think)
 void Fontinfo::addShadeArea(SDL_Rect &rect, int shade_distance[2])
 {
     if (is_shadow) {
-        if (shade_distance[0] > 0)
-            rect.w += shade_distance[0];
-        else {
-            rect.x += shade_distance[0];
-            rect.w -= shade_distance[0];
-        }
+        int offset = shade_distance[0];
 
-        if (shade_distance[1] > 0)
-            rect.h += shade_distance[1];
-        else {
-            rect.y += shade_distance[1];
-            rect.h -= shade_distance[1];
-        }
+        // We need to redraw a rectangle the size of the glyph's border
+        // Previously, shadow was only in one direction
+        // Now 'shadow' (border) is symmetric in all directions
+        // Therefore, expand rectangle by offset in both directions
+        // To do this, move the upper left rectangle upwards/backwards by offset
+        rect.x -= offset;
+        rect.y -= offset;
+
+        // and then increase the width and height by 2x the offset
+        // (so that the other sides of the rect also expand by 1x offset)
+        rect.h += 2 * offset;
+        rect.w += 2 * offset;
+
+        // Old dirty rect update code for one directional shadow
+        // if (shade_distance[0] > 0)
+        //     rect.w += shade_distance[0];
+        // else {
+        //     rect.x += shade_distance[0];
+        //     rect.w -= shade_distance[0];
+        // }
+
+        // if (shade_distance[1] > 0)
+        //     rect.h += shade_distance[1];
+        // else {
+        //     rect.y += shade_distance[1];
+        //     rect.h -= shade_distance[1];
+        // }
     }
 }
 
