@@ -689,7 +689,7 @@ private:
     Glyph renderGlyph(Font* font, Uint16 text, int size,
                              float x_fractional_part);
     void drawGlyph(SDL_Surface* dst_surface, Fontinfo* info, SDL_Color &color,
-                   wchar unicode, float x, int y, bool shadow_flag,
+                   wchar unicode, float x, int y, int shadow_flag,
                    AnimationInfo* cache_info, SDL_Rect* clip,
                    SDL_Rect &dst_rect);
     int  drawChar(const char* text, Fontinfo* info, bool flush_flag,

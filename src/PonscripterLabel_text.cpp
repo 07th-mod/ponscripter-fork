@@ -43,7 +43,7 @@ PonscripterLabel::renderGlyph(Font* font, Uint16 text, int size,
 void
 PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
         SDL_Color &color, unsigned short unicode, float x, int y,
-    bool shadow_flag, AnimationInfo* cache_info, SDL_Rect* clip,
+    int shadow_flag, AnimationInfo* cache_info, SDL_Rect* clip,
     SDL_Rect &dst_rect)
 {
     float minx, maxy;
@@ -64,12 +64,8 @@ PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
     dst_rect.x = int(floor(x + minx));
     dst_rect.y = y + info->font()->ascent() - int(ceil(maxy));
 
-    int original_x = dst_rect.x;
-    int original_y = dst_rect.y;
-
-    int off = shade_distance[0];
-
     // Table of where the shadow should be drawn for each iteration
+    int off = shade_distance[0];
     int offsets[8][2] = {
         {  0,    off }, // North
         {  off,  off }, // North East
@@ -81,38 +77,31 @@ PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
         { -off,  off }, // North West
     };
 
-    // Render the shadow multiple times to emulate an outline
-    // Seems that to properly use freetype's FT_Glyph_StrokeBorder you
-    // need to pre-render the outline glyphs? not confident I could get
-    // that to work.
-    int num_draw = shadow_flag ? 8 : 1;
+    // If shadow_flag is within range, apply offset according to above table
+    // Set to -1 if no offset to be applied.
+    if (shadow_flag >= 0 && shadow_flag < 8) {
+        dst_rect.x += offsets[shadow_flag][0];
+        dst_rect.y += offsets[shadow_flag][1];
+    }
 
-    for(int i = 0; i < num_draw; i++)
-    {
-        if (shadow_flag) {
-            dst_rect.x = original_x + offsets[i][0];
-            dst_rect.y = original_y + offsets[i][1];
+    if (g.bitmap) {
+        dst_rect.w = g.bitmap->w;
+        dst_rect.h = g.bitmap->h;
+
+        if (cache_info == &text_info) {
+            // When rendering text
+            cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
+                                color, clip);
+            cache_info->blendOnSurface(dst_surface, 0, 0, dst_rect);
         }
-
-        if (g.bitmap) {
-            dst_rect.w = g.bitmap->w;
-            dst_rect.h = g.bitmap->h;
-
-            if (cache_info == &text_info) {
-                // When rendering text
+        else {
+            if (cache_info)
                 cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
                                     color, clip);
-                cache_info->blendOnSurface(dst_surface, 0, 0, dst_rect);
-            }
-            else {
-                if (cache_info)
-                    cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
-                                        color, clip);
 
-                if (dst_surface)
-                    alphaBlendText(dst_surface, dst_rect, g.bitmap, color, clip,
-                                rotate_flag);
-            }
+            if (dst_surface)
+                alphaBlendText(dst_surface, dst_rect, g.bitmap, color, clip,
+                            rotate_flag);
         }
     }
 }
@@ -182,14 +171,22 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         SDL_Rect  dst_rect;
         if (info->is_shadow) {
             color.r = color.g = color.b = 0;
-            drawGlyph(surface, info, color, unicode, x, y, true, cache_info,
-              clip, dst_rect);
+
+            // Render the shadow multiple times to emulate an outline
+            // Seems that to properly use freetype's FT_Glyph_StrokeBorder you
+            // need to pre-render the outline glyphs? not confident I could get
+            // that to work.
+            for(int shadow_flag = 0; shadow_flag < 8; shadow_flag++)
+            {
+                drawGlyph(surface, info, color, unicode, x, y, shadow_flag, cache_info,
+                clip, dst_rect);
+            }
         }
 
         color.r = info->color.r;
         color.g = info->color.g;
         color.b = info->color.b;    
-        drawGlyph(surface, info, color, unicode, x, y, false, cache_info,
+        drawGlyph(surface, info, color, unicode, x, y, -1, cache_info,
           clip, dst_rect);
 
     info->addShadeArea(dst_rect, shade_distance);
