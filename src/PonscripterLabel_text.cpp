@@ -64,32 +64,55 @@ PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
     dst_rect.x = int(floor(x + minx));
     dst_rect.y = y + info->font()->ascent() - int(ceil(maxy));
 
-    // if (shadow_flag) {
-    //     if (info->getRTL())
-    //         dst_rect.x -= shade_distance[0];
-    //     else
-    //         dst_rect.x += shade_distance[0];
-    //     dst_rect.y += shade_distance[1];
-    // }
+    int original_x = dst_rect.x;
+    int original_y = dst_rect.y;
 
-    if (g.bitmap) {
-        dst_rect.w = g.bitmap->w;
-        dst_rect.h = g.bitmap->h;
+    int off = shade_distance[0];
 
-        if (cache_info == &text_info) {
-            // When rendering text
-            cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
-                                  color, clip);
-            cache_info->blendOnSurface(dst_surface, 0, 0, dst_rect);
+    // Table of where the shadow should be drawn for each iteration
+    int offsets[8][2] = {
+        {  0,    off }, // North
+        {  off,  off }, // North East
+        {  off,  0   }, // East
+        {  off, -off }, // South East
+        {  0,   -off }, // South
+        { -off, -off }, // South West
+        { -off,  0   }, // West
+        { -off,  off }, // North West
+    };
+
+    // Render the shadow multiple times to emulate an outline
+    // Seems that to properly use freetype's FT_Glyph_StrokeBorder you
+    // need to pre-render the outline glyphs? not confident I could get
+    // that to work.
+    int num_draw = shadow_flag ? 8 : 1;
+
+    for(int i = 0; i < num_draw; i++)
+    {
+        if (shadow_flag) {
+            dst_rect.x = original_x + offsets[i][0];
+            dst_rect.y = original_y + offsets[i][1];
         }
-        else {
-            if (cache_info)
-                cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
-                                      color, clip);
 
-            if (dst_surface)
-                alphaBlendText(dst_surface, dst_rect, g.bitmap, color, clip,
-                               rotate_flag);
+        if (g.bitmap) {
+            dst_rect.w = g.bitmap->w;
+            dst_rect.h = g.bitmap->h;
+
+            if (cache_info == &text_info) {
+                // When rendering text
+                cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
+                                    color, clip);
+                cache_info->blendOnSurface(dst_surface, 0, 0, dst_rect);
+            }
+            else {
+                if (cache_info)
+                    cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
+                                        color, clip);
+
+                if (dst_surface)
+                    alphaBlendText(dst_surface, dst_rect, g.bitmap, color, clip,
+                                rotate_flag);
+            }
         }
     }
 }
@@ -158,17 +181,9 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         SDL_Color color;
         SDL_Rect  dst_rect;
         if (info->is_shadow) {
-            // Set the font outline size using what used to be the
-            // x shade distance offset
-            int original_size = info->size();
-            info->set_size(original_size + shade_distance[0]);
-
             color.r = color.g = color.b = 0;
             drawGlyph(surface, info, color, unicode, x, y, true, cache_info,
               clip, dst_rect);
-
-            // After drawing the shadow, reset the size
-            info->set_size(original_size);
         }
 
         color.r = info->color.r;
