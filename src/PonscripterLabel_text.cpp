@@ -64,13 +64,13 @@ PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
     dst_rect.x = int(floor(x + minx));
     dst_rect.y = y + info->font()->ascent() - int(ceil(maxy));
 
-    if (shadow_flag) {
-        if (info->getRTL())
-            dst_rect.x -= shade_distance[0];
-        else
-            dst_rect.x += shade_distance[0];
-        dst_rect.y += shade_distance[1];
-    }
+    // if (shadow_flag) {
+    //     if (info->getRTL())
+    //         dst_rect.x -= shade_distance[0];
+    //     else
+    //         dst_rect.x += shade_distance[0];
+    //     dst_rect.y += shade_distance[1];
+    // }
 
     if (g.bitmap) {
         dst_rect.w = g.bitmap->w;
@@ -158,9 +158,17 @@ PonscripterLabel::drawChar(const char* text, Fontinfo* info, bool flush_flag,
         SDL_Color color;
         SDL_Rect  dst_rect;
         if (info->is_shadow) {
+            // Set the font outline size using what used to be the
+            // x shade distance offset
+            int original_size = info->size();
+            info->set_size(original_size + shade_distance[0]);
+
             color.r = color.g = color.b = 0;
             drawGlyph(surface, info, color, unicode, x, y, true, cache_info,
               clip, dst_rect);
+
+            // After drawing the shadow, reset the size
+            info->set_size(original_size);
         }
 
         color.r = info->color.r;
