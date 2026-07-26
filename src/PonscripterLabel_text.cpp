@@ -98,7 +98,8 @@ PonscripterLabel::drawGlyph(SDL_Surface* dst_surface, Fontinfo* info,
             dst_rect.w = g.bitmap->w;
             dst_rect.h = g.bitmap->h;
 
-            if (cache_info == &text_info) {
+            // Don't use cached value when rendering shadow
+            if ((cache_info == &text_info) && !shadow_flag) {
                 // When rendering text
                 cache_info->blendText(g.bitmap, dst_rect.x, dst_rect.y,
                                     color, clip);
