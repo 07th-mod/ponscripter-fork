@@ -51,6 +51,12 @@ The below links contain general information about POnscripter (not specific to t
 * [Ponscripter Tutorial](https://07th-mod.github.io/ponscripter-fork) - Most likely you should start here
 * [Ponscripter API Reference](https://07th-mod.github.io/ponscripter-fork/api/) - Mirror of Uncle Mion's Ponscripter API reference
 
+### Instructions to build from source
+
+Please refer to [INSTALL.md](https://github.com/07th-mod/ponscripter-fork/blob/mod/INSTALL.md) for build instructions.
+
+We also have automated builds on github which you can use as reference - see `.github/workflows`, `.travis_before_install.sh`, and `.travis_run.sh`.
+
 ## Compatibility
 
 This incarnation of the engine has primarily been tested with the [Umineko](https://store.steampowered.com/app/406550/) script.

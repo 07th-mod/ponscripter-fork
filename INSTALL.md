@@ -1,5 +1,25 @@
 # Building and Installing
 
+## Github automated builds
+
+You can examine our automated builds on github to see the requirements for building and how the build is performed - see `.github/workflows`, `.travis_before_install.sh`, and `.travis_run.sh`.
+
+## Quick guide for building with MSYS2 on Windows manually (without Steam support)
+
+Quick guide for developers on Windows who want to build the engine on their own system.
+
+1. Install [MSYS2](https://www.msys2.org/)
+2. Open the **`32-bit`** mingw32 console, default location `C:\msys64\mingw32.exe`
+  - Check that the console says "MINGW32" when you open it.
+3. Install packages: `pacman -S mingw-w64-i686-gcc make autoconf automake-wrapper`
+4. Navigate to the installer directory, remembering to escape backslashes: `cd C:\\temp\\ponscripter-fork` for example
+5. Run `./configure`
+6. Run `make`
+7. Check for any errors on the console output. Common errors are:
+  - SDL2 not found - check you are using the 32-bit version of the console, otherwise it will try to build 64-bit and can't find 64-bit SDL
+  - Missing packages - check the above packages are installed
+8. If the build is successful, the executable will be generated at `src\ponscr.exe`
+
 ## Prerequisites
 
 Building Ponscripter requires the following as a bare minimum:
