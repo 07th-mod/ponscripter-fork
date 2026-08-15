@@ -235,6 +235,7 @@ sfunc_lut_t::sfunc_lut_t() {
     dict["jumpf"]            = &PonscripterLabel::jumpfCommand;
     dict["tachistate"]       = &PonscripterLabel::tachistateCommand;
     dict["ld"]               = &PonscripterLabel::ldCommand;
+    dict["letterbox"]        = &PonscripterLabel::letterboxCommand;
     dict["loadgame"]         = &PonscripterLabel::loadgameCommand;
     dict["localestring"]     = &PonscripterLabel::localestringCommand;
     dict["locate"]           = &PonscripterLabel::locateCommand;
@@ -622,6 +623,7 @@ PonscripterLabel::PonscripterLabel()
     sprite_info          = new AnimationInfo[MAX_SPRITE_NUM];
     sprite2_info         = new AnimationInfo[MAX_SPRITE2_NUM];
     enable_wheeldown_advance_flag = false;
+    letterboxing_enabled = false;
 
     for (int i = 0; i < MAX_SPRITE2_NUM; ++i)
         sprite2_info[i].affine_flag = true;
@@ -1445,6 +1447,31 @@ void PonscripterLabel::resetSentenceFont()
 void PonscripterLabel::rerender() {
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, screen_tex, NULL, NULL);
+
+  if(letterboxing_enabled)
+  {
+    // The width of the 4:3 equivalent window (scaling factor of 3/4 to go between a 16:9 window and a 4:3 window)
+    int width_43 = screen_width * 3 / 4;
+
+    // Each black bar is half the difference between the 4:3 window and the 16:9 window
+    int black_bar_width =  (screen_width - width_43) / 2;
+
+    // Left letter box
+    SDL_Rect black_bar;
+    black_bar.x = 0;
+    black_bar.y = 0;
+    black_bar.w = black_bar_width;
+    black_bar.h = screen_height;
+    SDL_RenderFillRect(renderer, &black_bar);
+
+    // Right letter box
+    black_bar.x = screen_width - black_bar_width;
+    black_bar.y = 0;
+    black_bar.w = black_bar_width;
+    black_bar.h = screen_height;
+    SDL_RenderFillRect(renderer, &black_bar);
+  }
+
   SDL_RenderPresent(renderer);
 }
 

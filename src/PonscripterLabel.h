@@ -141,6 +141,7 @@ public:
     bool key_pressed_flag;
     int  shift_pressed_status;
     int  ctrl_pressed_status;
+    bool letterboxing_enabled;
 
     /* ---------------------------------------- */
     /* Commands */
@@ -249,6 +250,7 @@ public:
     int logspCommand(const pstring& cmd);
     int locateCommand(const pstring& cmd);
     int loadgameCommand(const pstring& cmd);
+    int letterboxCommand(const pstring& cmd);
     int tachistateCommand(const pstring& cmd);
     int ldCommand(const pstring& cmd);
     int jumpfCommand(const pstring& cmd);

@@ -2019,6 +2019,23 @@ int PonscripterLabel::loadgameCommand(const pstring& cmd)
     }
 }
 
+
+int PonscripterLabel::letterboxCommand(const pstring& cmd)
+{
+    Expression loc = script_h.readStrExpr();
+
+    if(loc.is_bareword("on"))
+    {
+        letterboxing_enabled = true;
+    }
+    else
+    {
+        letterboxing_enabled = false;
+    }
+
+    return RET_CONTINUE;
+}
+
 int PonscripterLabel::tachistateCommand(const pstring& cmd)
 {
     script_h.readIntExpr().mutate((tachi_info[0].showing() && tachi_info[0].file_name != "") ? 1 : 0);
